@@ -2,12 +2,20 @@
 # tmux new-session -d -s my_session &&
 #   tmux ls
 
-tmux new-session -d -s foo &&
-  tmux split-window -h &&
-  tmux split-window -v &&
+tmux new-session -d -s "$1" &&
   tmux split-window -v -t 1 'htop' &&
+  tmux new-window &&
+  tmux previous-window &&
   tmux select-pane -t 1 &&
   tmux a
+
+
+# tmux new-session -d -s "$1" &&
+#   tmux split-window -h &&
+#   tmux split-window -v -t 1 'htop' &&
+#   tmux select-pane -t 1 &&
+#   tmux a
+
 # tmux send-keys 'bundle exec thin start' 'C-m'
 # tmux rename-window 'Foo'
 # tmux select-window -t foo:0
