@@ -1,26 +1,22 @@
 #!/bin/bash
-# tmux new-session -d -s my_session &&
-#   tmux ls
+start_session () {
+  tmux new-session -d -s "$1" &&
+    tmux split-window -v -t 1 'htop' &&
+    tmux new-window &&
+    tmux previous-window &&
+    tmux select-pane -t 1 &&
+    tmux resize-pane -D 30 &&
+    tmux a -t "$1"
+}
 
-tmux new-session -d -s "$1" &&
-  tmux split-window -v -t 1 'htop' &&
-  tmux new-window &&
-  tmux previous-window &&
-  tmux select-pane -t 1 &&
-  tmux a
+if [[ "$#" -eq 1 ]]; then
+  start_session $1
+else
+  while read -p "Session name: " sname ; do
+    if [ ${#sname} -ge 1 ]; then
+      start_session $sname
+      break
+    fi
+  done
+fi
 
-
-# tmux new-session -d -s "$1" &&
-#   tmux split-window -h &&
-#   tmux split-window -v -t 1 'htop' &&
-#   tmux select-pane -t 1 &&
-#   tmux a
-
-# tmux send-keys 'bundle exec thin start' 'C-m'
-# tmux rename-window 'Foo'
-# tmux select-window -t foo:0
-# tmux send-keys 'bundle exec compass watch' 'C-m'
-# tmux split-window -v -t 0 'exec pfoo'
-# tmux send-keys 'rake ts:start' 'C-m'
-# tmux split-window -v -t 1 'exec pfoo'
-# tmux -2 attach-session -t foo
