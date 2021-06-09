@@ -1,17 +1,19 @@
 #!/bin/bash
 
-# Send the header so that i3bar knows we want to use JSON:
-echo '{ "version": 1 }'
+i3status
 
-# Begin the endless array.
-echo '['
+# # Send the header so that i3bar knows we want to use JSON:
+# echo '{ "version": 1 }'
 
-# We send an empty first array of blocks to make the loop simpler:
-echo '[]'
+# # Begin the endless array.
+# echo '['
 
-# Now send blocks with information forever:
-while :;
-do
-  echo ",[{\"name\":\"id_time\",\"full_text\":\"$(date)\"}]"
-  sleep 5
-done
+# # We send an empty first array of blocks to make the loop simpler:
+# echo '[]'
+
+# # Now send blocks with information forever:
+# while :;
+# do
+#   echo ",[{\"name\":\"id_time\",\"full_text\":\"$(date)\"}]"
+#   sleep 5
+# done
