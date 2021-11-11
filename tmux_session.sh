@@ -9,7 +9,7 @@ start_session () {
     tmux rename-window "NVIM" &&
     tmux previous-window &&
     tmux select-pane -t 1 &&
-    tmux resize-pane -D 30 &&
+    tmux resize-pane -D 18 &&
     tmux new-window &&
     tmux rename-window "TESTS" &&
     tmux split-window -h &&
