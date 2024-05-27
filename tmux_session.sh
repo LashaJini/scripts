@@ -1,34 +1,81 @@
 #!/bin/bash
 
 # its ugly, ik, idc.
-start_session () {
-  tmux new-session -d -s "$1" &&
-    tmux split-window -v -t 1 'htop' &&
-    tmux rename-window "SCRIPTS" &&
-    tmux new-window &&
-    tmux rename-window "NVIM" &&
-    tmux previous-window &&
-    tmux select-pane -t 1 &&
-    tmux resize-pane -D 18 &&
-    tmux new-window &&
-    tmux rename-window "TESTS" &&
-    tmux split-window -h &&
-    tmux new-window &&
-    tmux rename-window "MISC" &&
-    tmux next-window &&
-    tmux split-window -h &&
-    tmux select-pane -L &&
-    tmux a -t "$1"
+start_default_session() {
+	tmux new-session -d -s "$1" &&
+		tmux split-window -v -t 1 'htop' &&
+		tmux rename-window "SCRIPTS" &&
+		tmux new-window &&
+		tmux rename-window "NVIM" &&
+		tmux previous-window &&
+		tmux select-pane -t 1 &&
+		tmux resize-pane -D 18 &&
+		tmux new-window &&
+		tmux rename-window "TESTS" &&
+		tmux split-window -h &&
+		tmux new-window &&
+		tmux rename-window "MISC" &&
+		tmux next-window &&
+		tmux split-window -h &&
+		tmux select-pane -L &&
+		tmux a -t "$sname"
 }
 
-if [[ "$#" -eq 1 ]]; then
-  start_session $1
-else
-  while read -p "Session name: " sname ; do
-    if [ ${#sname} -ge 1 ]; then
-      start_session $sname
-      break
-    fi
-  done
-fi
+# mind palace
+start_mp_session() {
+	tmux new-session -d -s "mp" &&
+		# window 1
+		tmux renamew "scripts" &&
 
+		## splits
+		tmux splitw -h -t 1 &&
+		tmux splitw -v &&
+		tmux splitw -v &&
+		tmux splitw -v -t 1 &&
+
+		## sizes
+		tmux resizep -t ":1.4" -R 38 &&
+		tmux resizep -t ":1.4" -U 1 &&
+		tmux resizep -t ":1.3" -U 14 &&
+		tmux resizep -t ":1.2" -D 8 &&
+
+		## commands
+		tmux send-keys -t ":1.3" htop Enter &&
+		tmux send-keys -t ":1.4" "watch -n 1 nvidia-smi" Enter &&
+		tmux send-keys -t ":1.5" "make vdb ARGS=start" Enter &&
+
+		# window 2
+		tmux neww &&
+		tmux renamew "nvim" &&
+
+		# window 3
+		tmux neww &&
+		tmux renamew "misc" &&
+
+		# attach
+		tmux selectw -t "1" &&
+		tmux selectp -t "1" &&
+		tmux a -t "mp"
+}
+
+start_session() {
+	if [[ "$#" -eq 1 ]]; then
+		start_default_session $1
+	else
+		while read -p "Session name: " sname; do
+			if [ ${#sname} -ge 1 ]; then
+				start_default_session $sname
+				break
+			fi
+		done
+	fi
+}
+
+case $1 in
+mp)
+	start_mp_session
+	;;
+*)
+	start_session $1
+	;;
+esac
