@@ -40,18 +40,18 @@ start_mp_session() {
 		tmux resizep -t ":1.2" -D 8 &&
 
 		## commands
-		tmux send-keys -t ":1.1" "source .venv/bin/activate.fish" Enter &&
-		tmux send-keys -t ":1.2" "source .venv/bin/activate.fish" Enter &&
+		tmux send-keys -t ":1.1" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
+		tmux send-keys -t ":1.2" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
 		tmux send-keys -t ":1.3" htop Enter &&
 		tmux send-keys -t ":1.4" "watch -n 1 nvidia-smi" Enter &&
-		tmux send-keys -t ":1.5" "source .venv/bin/activate.fish && make vdb ARGS=start" Enter &&
+		tmux send-keys -t ":1.5" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
 
 		# window 2
 		tmux neww &&
 		tmux renamew "nvim" &&
 
 		## commands
-		tmux send-keys -t ":2.1" "source .venv/bin/activate.fish" Enter &&
+		tmux send-keys -t ":2.1" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
 
 		# window 3
 		tmux neww &&
