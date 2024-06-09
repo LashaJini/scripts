@@ -44,7 +44,7 @@ start_mp_session() {
 		tmux send-keys -t ":1.2" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
 		tmux send-keys -t ":1.3" htop Enter &&
 		tmux send-keys -t ":1.4" "watch -n 1 nvidia-smi" Enter &&
-		tmux send-keys -t ":1.5" "source $(poetry env info --path)/bin/activate.fish && clear" Enter &&
+		tmux send-keys -t ":1.5" "source $(poetry env info --path)/bin/activate.fish && make vdb ARGS=start && clear" Enter &&
 
 		# window 2
 		tmux neww &&
