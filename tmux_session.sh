@@ -43,7 +43,10 @@ start_mp_session() {
 }
 
 start_default_session() {
-  tmux new-session -d -s "$1" &&
+  local session_name="$1"
+  local attach_flag="$2"
+
+  tmux new-session -d -s "$session_name" &&
     # window 1
     tmux renamew "scripts" &&
 
@@ -80,20 +83,26 @@ start_default_session() {
     # attach
     tmux selectw -t "1" &&
     tmux selectp -t "1" &&
-    tmux a -t "$1"
+    if [[ "$attach_flag" == "-a" ]]; then
+      tmux attach -t "$session_name"
+    fi
 }
 
 start_session() {
-  if [[ "$#" -eq 1 ]]; then
-    start_default_session $1
+  local sname attach_flag
+
+  if [[ "$#" -ge 1 ]]; then
+    sname="$1"
+    attach_flag="$2"
   else
     while read -p "Session name: " sname; do
-      if [ ${#sname} -ge 1 ]; then
-        start_default_session $sname
+      if [[ -n "$sname" ]]; then
         break
       fi
     done
   fi
+
+  start_default_session "$sname" "$attach_flag"
 }
 
 case $1 in
@@ -101,6 +110,6 @@ mp)
   start_mp_session
   ;;
 *)
-  start_session $1
+  start_session "$1" "$2"
   ;;
 esac
